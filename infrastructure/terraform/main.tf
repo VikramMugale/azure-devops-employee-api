@@ -57,6 +57,7 @@ resource "azurerm_linux_web_app" "main" {
   location            = azurerm_resource_group.main.location
   service_plan_id     = azurerm_service_plan.main.id
   https_only          = true
+  key_vault_reference_identity_id = azurerm_user_assigned_identity.app.id
   tags                = var.tags
 
   identity {
@@ -65,9 +66,9 @@ resource "azurerm_linux_web_app" "main" {
   }
 
   site_config {
-    always_on                         = true
-    health_check_path                 = "/health"
-    health_check_eviction_time_in_min = 5
+    always_on                                     = true
+    health_check_path                             = "/health"
+    health_check_eviction_time_in_min             = 5
     container_registry_use_managed_identity       = true
     container_registry_managed_identity_client_id = azurerm_user_assigned_identity.app.client_id
 
@@ -81,9 +82,11 @@ resource "azurerm_linux_web_app" "main" {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"
     APP_ENV                             = "production"
     APP_VERSION                         = "1.0.0"
-    # DATABASE_URL should be set via Key Vault reference or App Service config
-    # after applying Terraform. Example Key Vault reference:
-    # DATABASE_URL = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.database_url.versionless_id})"
+
+    # App Service resolves this Key Vault reference at runtime.
+    # The real NeonDB connection string is stored in Key Vault, not GitHub
+    # or the Docker image.
+    DATABASE_URL = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.database_url.versionless_id})"
   }
 }
 
