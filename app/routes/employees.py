@@ -18,14 +18,14 @@ logger = get_logger(__name__)
 
 
 @router.get("/", response_model=list[EmployeeResponse])
-def list_employees(db: Session = Depends(get_db)):
+def list_employees(db: Session = Depends(get_db)):  # noqa: B008
     employees = get_all_employees(db)
     logger.info("Listed %d employees", len(employees))
     return employees
 
 
 @router.get("/{employee_id}", response_model=EmployeeResponse)
-def get_employee(employee_id: int, db: Session = Depends(get_db)):
+def get_employee(employee_id: int, db: Session = Depends(get_db)):  # noqa: B008
     employee = get_employee_by_id(db, employee_id)
     if employee is None:
         logger.warning("Employee %s not found", employee_id)
@@ -34,7 +34,7 @@ def get_employee(employee_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=EmployeeResponse, status_code=status.HTTP_201_CREATED)
-def add_employee(employee_data: EmployeeCreate, db: Session = Depends(get_db)):
+def add_employee(employee_data: EmployeeCreate, db: Session = Depends(get_db)):  # noqa: B008
     try:
         employee = create_employee(db, employee_data)
         logger.info("Employee created id=%s email=%s", employee.id, employee.email)
@@ -51,7 +51,7 @@ def add_employee(employee_data: EmployeeCreate, db: Session = Depends(get_db)):
 def edit_employee(
     employee_id: int,
     employee_data: EmployeeUpdate,
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     try:
         employee = update_employee(db, employee_id, employee_data)
@@ -71,7 +71,7 @@ def edit_employee(
 
 
 @router.delete("/{employee_id}", status_code=status.HTTP_204_NO_CONTENT)
-def remove_employee(employee_id: int, db: Session = Depends(get_db)):
+def remove_employee(employee_id: int, db: Session = Depends(get_db)):  # noqa: B008
     if not delete_employee(db, employee_id):
         logger.warning("Employee %s not found for delete", employee_id)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Employee not found")
