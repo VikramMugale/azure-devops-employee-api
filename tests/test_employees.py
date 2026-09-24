@@ -8,8 +8,8 @@ from sqlalchemy.orm import sessionmaker
 # Tests use SQLite so CI does not need Neon credentials.
 os.environ.setdefault("DATABASE_URL", "sqlite:///./test_employee.db")
 
-from app.database import Base, get_db  # noqa: E402
-from app.main import app  # noqa: E402
+from app.database import Base, get_db
+from app.main import app
 
 test_engine = create_engine(
     "sqlite:///./test_employee.db",

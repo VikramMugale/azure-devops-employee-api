@@ -44,3 +44,5 @@ infrastructure/terraform/crash.log
 
 # Ruff
 .ruff_cache/
+
+myenv/
