@@ -1,0 +1,22 @@
+# Copy this file to terraform.tfvars and fill in CHANGE_ME values.
+# NEVER commit terraform.tfvars (it is in .gitignore).
+
+location            = "centralindia"
+resource_group_name = "rg-employee-api"
+
+# CHANGE_ME – must be globally unique (alphanumeric only)
+acr_name = "employeeapiacrXXXX"
+
+# CHANGE_ME – must be globally unique
+app_name = "employee-api-XXXX"
+
+# CHANGE_ME – must be globally unique (3-24 chars, alphanumeric)
+key_vault_name = "kv-empapi-XXXX"
+
+app_service_sku = "B1"
+
+tags = {
+  project     = "employee-api"
+  environment = "dev"
+  managed_by  = "terraform"
+}
